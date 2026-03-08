@@ -19,6 +19,7 @@ import { usePostCreateUserMutation } from "@/state/api";
 import ErrorMessage from "@/components/errorMessage";
 import React from "react";
 
+
 export default function SignUpPage() {
   const [signUp, { isLoading, error }] = usePostCreateUserMutation();
   const [signUpError, setSignUpError] = React.useState<string | null>(null);
@@ -32,7 +33,7 @@ export default function SignUpPage() {
     },
   });
 
-  const onSubmit = async (values: SignUpData) => {
+  const onSubmit = async (values:any) => {
     try {
       const res = await signUp(values).unwrap();
       setSignUpError(null);
@@ -41,7 +42,10 @@ export default function SignUpPage() {
     } catch (err: any) {
       // prefer the caught error first; fallback to mutation error
       const message =
-        err?.data?.message || err?.message || error?.data?.message || "Invalid email or password";
+        (err as any)?.data?.message ||
+        (err as any)?.error ||
+        "Invalid email or password";
+       
       setSignUpError(message);
       console.log("Sign up failed:", err);
     }

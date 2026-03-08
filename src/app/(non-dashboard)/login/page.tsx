@@ -43,8 +43,8 @@ export default function LoginPage() {
 
   } catch (err) {
    const message =
-        error?.data?.message ||
-        error?.error ||
+        (err as any)?.data?.message ||
+        (err as any)?.error ||
         "Invalid email or password";
 
     setLoginError(message);
