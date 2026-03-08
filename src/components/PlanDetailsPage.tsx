@@ -21,26 +21,26 @@ export default function PremiumPlanPage({ plan }: PremiumPlanPageProps) {
   const [activeTab, setActiveTab] = useState<"today" | "previous">("today");
 
   const { data: plansData, isLoading: plansLoading } = useGetplansQuery();
-  const planData = plansData?.data?.find(p => {
+  const planData = plansData?.data?.find((p: any) => {
     const nameLower = p.name.toLowerCase();
     const slug = nameLower.replace(/\s+/g, "-");
     return nameLower === plan.toLowerCase() || slug === plan.toLowerCase();
   });
 
-  const planId = planData?.id;
+  const planId: number | undefined = planData?.id;
   const { data: predictionsData, isLoading } = useGetPlanPredictionsTodayQuery(planId!, { skip: !planId });
   const hasPredictions = predictionsData?.count && predictionsData.count > 0;
 
   const [initiatePayment, {isLoading: isInitiatingPayment, isError: isInitiationError}] = useInitiatePaymentMutation();
 
   const form = useForm<PromptFormData>({
-    resolver: zodResolver(PromptFormSchema),
+    resolver: zodResolver(PromptFormSchema) as any,
     defaultValues: { 
       phoneNumber: "" ,
       predictionId: planId},
   });
 
- const submitPayment = async (values: PromptFormData) => {
+ const submitPayment = async (values: any) => {
   try {
     await initiatePayment(values).unwrap();
     toast.success("Payment initiated! Check your phone to complete the transaction.");
@@ -152,7 +152,9 @@ export default function PremiumPlanPage({ plan }: PremiumPlanPageProps) {
                     )}
 
                     <p className="text-xs text-gray-500">
-                      Tip Date: {new Date(predictionsData.tipDate).toLocaleDateString()}
+                      Tip Date: {predictionsData.data && predictionsData.data.length > 0 
+                        ? new Date(predictionsData.data[0].tipDate).toLocaleDateString()
+                        : "N/A"}
                     </p>
                   </div>
                 )}
@@ -195,7 +197,7 @@ export default function PremiumPlanPage({ plan }: PremiumPlanPageProps) {
                       <FormField
                        control={form.control}
                         name="predictionId"
-                        render={({ field }) => <input type="hidden" value={planId} {...field} />}
+                        render={({ field }) => <input type="hidden" {...field} />}
                         />
                       <Button
                         type="submit"

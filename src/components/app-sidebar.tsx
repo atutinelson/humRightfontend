@@ -105,19 +105,23 @@ export function AppSidebar() {
                   <Link href={link.href} className="w-full" 
                   aria-current={isActive ? "page" : undefined}>
                     <div className="flex items-center gap-3">
-                      <link.icon
-                        className={cn(
-                          "h-5 w-5",
-                          isActive ? "text-[#057857]" : "text-gray-600"
+                      <div
+                        className="flex items-center gap-3"
+                        aria-label={!open ? link.label : undefined}
+                      >
+                        <link.icon
+                          className={cn(
+                            "h-5 w-5",
+                            isActive ? "text-[#057857]" : "text-gray-600"
+                          )}
+                          aria-hidden={open ? undefined : true}
+                        />
+                        {open && (
+                          <span className="font-medium">
+                            {link.label}
+                          </span>
                         )}
-                        title={!open ? link.label : undefined}
-                        aria-hidden={open ? undefined : true}
-                      />
-                      {open && (
-                        <span className="font-medium">
-                          {link.label}
-                        </span>
-                      )}
+                      </div>
                     </div>
                   </Link>
                 </SidebarMenuButton>
