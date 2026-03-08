@@ -62,7 +62,7 @@ const AddPlan = ({ children }: { children: React.ReactNode }) => {
     } catch (err: any) {
       // prefer the caught error first; fallback to mutation error
       const message =
-        err?.data?.message || err?.message || error?.data?.message || "Invalid email or password";
+        err?.data?.message || err?.message || "Invalid email or password";
       toast.error(message,
          { position: "bottom-right" , className:"bg-green-500 text-white" });
     }

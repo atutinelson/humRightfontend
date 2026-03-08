@@ -52,7 +52,7 @@ const AddPrediction = ({ children, plans }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof createPredictionSchema>>({
-    resolver: zodResolver(createPredictionSchema),
+    resolver: zodResolver(createPredictionSchema) as any,
     defaultValues: {
       tipText: "",
       odd: 0,
