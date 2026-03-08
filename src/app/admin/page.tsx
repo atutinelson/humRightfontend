@@ -82,7 +82,7 @@ const AdminDashboard = () => {
             </p>
           ) : (
             <div className="space-y-8">
-              {Object.entries(freeTips.data).map(([date, tips]) => (
+              {Object.entries(freeTips.data as Record<string, any[]>).map(([date, tips]) => (
                 <div key={date}>
                   <h3 className="text-lg font-semibold mb-3">
                     {new Date(date).toDateString()}
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {tips.slice(0, 5).map((tip: any) => (
+                        {(tips as any[]).slice(0, 5).map((tip: any) => (
                           <tr key={tip.id} className="border-b border-border/50 hover:bg-secondary/30 transition">
                             <td className="py-3 px-4">
                               {new Date(tip.tipDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
