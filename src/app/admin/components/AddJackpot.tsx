@@ -40,7 +40,7 @@ const AddJackpot = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const [createJackpot, { isLoading }] = useCreateJackpotMutation();
   const form = useForm<JackpotForm>({
-    resolver: zodResolver(createJackpotSchema),
+    resolver: zodResolver(createJackpotSchema) as any,
     defaultValues: {
       name: "",
       startDatetime: new Date(),
@@ -139,7 +139,11 @@ const AddJackpot = ({ children }: { children: React.ReactNode }) => {
                 <FormItem>
                   <FormLabel>Start Date/Time</FormLabel>
                   <FormControl>
-                    <Input type="datetime-local" {...field} />
+                    <Input
+                      type="datetime-local"
+                      value={field.value ? field.value.toISOString().slice(0, 16) : ''}
+                      onChange={(e) => field.onChange(new Date(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +158,11 @@ const AddJackpot = ({ children }: { children: React.ReactNode }) => {
                 <FormItem>
                   <FormLabel>End Date/Time</FormLabel>
                   <FormControl>
-                    <Input type="datetime-local" {...field} />
+                    <Input
+                      type="datetime-local"
+                      value={field.value ? field.value.toISOString().slice(0, 16) : ''}
+                      onChange={(e) => field.onChange(new Date(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

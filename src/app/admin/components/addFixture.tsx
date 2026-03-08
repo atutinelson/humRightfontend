@@ -36,7 +36,7 @@ const AddFixture = ({ children }: { children: React.ReactNode }) => {
   
 
   const form = useForm<z.infer<typeof createFixtureSchema>>({
-    resolver: zodResolver(createFixtureSchema),
+    resolver: zodResolver(createFixtureSchema) as any,
     defaultValues: {
       matchDate: new Date(), // Current date/time in YYYY-MM-DDTHH:MM format
       homeTeam: "",
@@ -48,7 +48,7 @@ const AddFixture = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createFixtureSchema>) => {
+  const onSubmit = async (values: any) => {
     try {
       // Convert matchDate to ISO string for the API
       const dataToSend = {
@@ -97,7 +97,8 @@ const AddFixture = ({ children }: { children: React.ReactNode }) => {
                   <FormControl>
                     <Input
                       type="datetime-local"
-                      {...field}
+                      value={field.value ? field.value.toISOString().slice(0, 16) : ''}
+                      onChange={(e) => field.onChange(new Date(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
